@@ -1,0 +1,5 @@
+[http]
+address = ":8000"
+
+[filesystem]
+root_path = "data"

@@ -46,17 +46,26 @@ func main() {
 		cfg.Paste.IDLength,
 	)
 
+	netcatAddress := strings.TrimSpace(cfg.Netcat.Address)
+	if netcatAddress == "" {
+		netcatAddress = strings.TrimSpace(cfg.Netcat.LegacyAddress)
+	}
+
 	netcatReadTimeout := 15 * time.Second
-	if strings.TrimSpace(cfg.Http.NetcatReadTimeout) != "" {
-		d, err := time.ParseDuration(cfg.Http.NetcatReadTimeout)
+	netcatReadTimeoutConfig := strings.TrimSpace(cfg.Netcat.ReadTimeout)
+	if netcatReadTimeoutConfig == "" {
+		netcatReadTimeoutConfig = strings.TrimSpace(cfg.Netcat.LegacyReadTimeout)
+	}
+	if netcatReadTimeoutConfig != "" {
+		d, err := time.ParseDuration(netcatReadTimeoutConfig)
 		if err == nil && d > 0 {
 			netcatReadTimeout = d
 		}
 	}
 
-	if strings.TrimSpace(cfg.Http.NetcatAddress) != "" {
+	if netcatAddress != "" {
 		go func() {
-			if err := serveNetcat(l, cfg.Http.NetcatAddress, cfg.Http.PublicURL, ph.MaxContentLength(), cfg.Paste.IDLength, netcatReadTimeout, s); err != nil {
+			if err := serveNetcat(l, netcatAddress, cfg.Http.PublicURL, ph.MaxContentLength(), cfg.Paste.IDLength, netcatReadTimeout, s); err != nil {
 				l.Error("netcat listener stopped", slog.Any("error", err))
 			}
 		}()

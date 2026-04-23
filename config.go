@@ -4,15 +4,23 @@ import "github.com/BurntSushi/toml"
 
 type Config struct {
 	Http       HttpConfig       `toml:"http"`
+	Netcat     NetcatConfig     `toml:"netcat"`
 	Filesystem FilesystemConfig `toml:"filesystem"`
 	Paste      PasteConfig      `toml:"paste"`
 }
 
 type HttpConfig struct {
-	Address           string `toml:"address"`
-	PublicURL         string `toml:"public_url"`
-	NetcatAddress     string `toml:"netcat_address"`
-	NetcatReadTimeout string `toml:"netcat_read_timeout"`
+	Address   string `toml:"address"`
+	PublicURL string `toml:"public_url"`
+}
+
+type NetcatConfig struct {
+	Address     string `toml:"address"`
+	ReadTimeout string `toml:"read_timeout"`
+
+	// Legacy keys kept for backward compatibility with old config files.
+	LegacyAddress     string `toml:"netcat_address"`
+	LegacyReadTimeout string `toml:"netcat_read_timeout"`
 }
 
 type FilesystemConfig struct {

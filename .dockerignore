@@ -1,0 +1,15 @@
+.git
+.github
+.vscode
+
+# Local runtime/output
+data
+triangle
+
+# Frontend build artifacts and local deps
+ui/node_modules
+ui/dist
+ui/.tanstack
+
+# Editor/OS files
+.DS_Store
